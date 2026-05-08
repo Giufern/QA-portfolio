@@ -1,0 +1,137 @@
+{
+  "info": {
+    "name": "QA Portfolio - API Tests",
+    "description": "Coleção de testes de API REST criada para fins de portfólio. Exemplifica validações de endpoints comuns em sistemas web.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET - Listar Usuários",
+      "request": {
+        "method": "GET",
+        "url": "https://reqres.in/api/users?page=1",
+        "description": "Valida retorno de lista de usuários com status 200 e estrutura correta."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function() {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Body contém data', function() {",
+              "  pm.expect(pm.response.json()).to.have.property('data');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "POST - Criar Usuário",
+      "request": {
+        "method": "POST",
+        "url": "https://reqres.in/api/users",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Giullia\", \"job\": \"QA Analyst\"}"
+        },
+        "description": "Valida criação de usuário com status 201 e retorno do ID gerado."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 201', function() {",
+              "  pm.response.to.have.status(201);",
+              "});",
+              "pm.test('Retorna ID', function() {",
+              "  pm.expect(pm.response.json()).to.have.property('id');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "PUT - Atualizar Usuário",
+      "request": {
+        "method": "PUT",
+        "url": "https://reqres.in/api/users/2",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Giullia Fernandes\", \"job\": \"QA Analyst Senior\"}"
+        },
+        "description": "Valida atualização de usuário com status 200 e campo updatedAt."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 200', function() {",
+              "  pm.response.to.have.status(200);",
+              "});",
+              "pm.test('Contém updatedAt', function() {",
+              "  pm.expect(pm.response.json()).to.have.property('updatedAt');",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "DELETE - Remover Usuário",
+      "request": {
+        "method": "DELETE",
+        "url": "https://reqres.in/api/users/2",
+        "description": "Valida remoção de usuário com status 204 e body vazio."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 204', function() {",
+              "  pm.response.to.have.status(204);",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "GET - Usuário não encontrado",
+      "request": {
+        "method": "GET",
+        "url": "https://reqres.in/api/users/999",
+        "description": "Valida comportamento para ID inexistente — deve retornar 404."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test('Status 404', function() {",
+              "  pm.response.to.have.status(404);",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
